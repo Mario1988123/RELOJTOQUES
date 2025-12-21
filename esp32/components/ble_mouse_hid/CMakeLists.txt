@@ -1,0 +1,10 @@
+idf_component_register(
+    SRCS
+        "src/ble_hid_mouse.c"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        bt
+        nvs_flash
+        esp_hid
+)
