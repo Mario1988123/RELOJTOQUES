@@ -1,18 +1,18 @@
 /*
- * RELOJ TOQUES - Transmisión de cartas por WiFi
+ * RELOJ TOQUES - Con Pantalla + Toques + WiFi
  *
- * Hardware: ESP32-S3 + QMI8658 (acelerómetro I2C)
+ * Hardware: ESP32-S3 + QMI8658 + Display
  *
- * Uso:
- * 1. Toques para PALO (1-4): ♥♠♣♦
- * 2. Pausa 2-3 segundos
- * 3. Toques para NÚMERO (1-13): As-K
- * 4. Transmisión automática por WiFi beacon
+ * Funcionalidad:
+ * 1. Muestra reloj en pantalla
+ * 2. Detecta toques para seleccionar carta (palo + número)
+ * 3. Transmite carta por WiFi beacon
  */
 
 #include <Wire.h>
 #include <WiFi.h>
 #include "esp_wifi.h"
+#include <TFT_eSPI.h>
 
 // Pines I2C
 #define SDA_PIN 18
@@ -35,15 +35,35 @@
 #define CH3 "\xE2\x80\x8D"  // U+200D
 #define CH4 "\xE2\x80\x8E"  // U+200E
 
+// Pantalla
+TFT_eSPI tft = TFT_eSPI();
+
 enum State { IDLE, SUIT, WAIT, NUMBER };
 State state = IDLE;
 uint8_t tapCount = 0;
 unsigned long lastTap = 0;
 uint8_t suit = 0, number = 0;
 
+// Símbolos de palos
+const char* suitSymbols[] = {"", "♥", "♠", "♣", "♦"};
+const char* numberNames[] = {"", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+
 void setup() {
   Serial.begin(115200);
   Serial.println("\n=== RELOJ TOQUES ===");
+
+  // Init Pantalla
+  tft.init();
+  tft.setRotation(0);
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextSize(2);
+
+  // Mensaje de bienvenida
+  tft.setCursor(20, 60);
+  tft.println("RELOJ");
+  tft.setCursor(15, 90);
+  tft.println("TOQUES");
 
   // Init I2C
   Wire.begin(SDA_PIN, SCL_PIN);
@@ -60,6 +80,9 @@ void setup() {
   WiFi.softAP("ESP32", "", 1, 0, 0);
 
   Serial.println("Sistema listo. Esperando toques...");
+
+  delay(2000);
+  updateDisplay();
 }
 
 void loop() {
@@ -88,16 +111,20 @@ void loop() {
     lastTap = now;
     Serial.printf("Toque! Total=%d Estado=%d\n", tapCount, state);
 
-    if (state == IDLE) state = SUIT;
+    if (state == IDLE) {
+      state = SUIT;
+      updateDisplay();
+    }
   }
 
   // Máquina de estados
   if (state == SUIT && (now - lastTap) > PAUSE) {
     if (tapCount >= 1 && tapCount <= 4) {
       suit = tapCount;
-      Serial.printf("Palo: %d\n", suit);
+      Serial.printf("Palo: %s\n", suitSymbols[suit]);
       tapCount = 0;
       state = NUMBER;
+      updateDisplay();
     } else {
       Serial.println("Error: palo inválido");
       reset();
@@ -107,8 +134,10 @@ void loop() {
   if (state == NUMBER && (now - lastTap) > PAUSE) {
     if (tapCount >= 1 && tapCount <= 13) {
       number = tapCount;
-      Serial.printf("Número: %d\n", number);
+      Serial.printf("Número: %s\n", numberNames[number]);
+      showCard(suit, number);
       sendCard(suit, number);
+      delay(3000);
       reset();
     } else {
       Serial.println("Error: número inválido");
@@ -124,6 +153,45 @@ void reset() {
   tapCount = 0;
   suit = 0;
   number = 0;
+  updateDisplay();
+}
+
+void updateDisplay() {
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextSize(2);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+  tft.setCursor(10, 40);
+  tft.println("RELOJ TOQUES");
+
+  tft.setCursor(10, 80);
+  if (state == IDLE) {
+    tft.println("Esperando...");
+  } else if (state == SUIT) {
+    tft.print("Toques: ");
+    tft.println(tapCount);
+    tft.setCursor(10, 110);
+    tft.println("Palo");
+  } else if (state == NUMBER) {
+    tft.print("Palo: ");
+    tft.println(suitSymbols[suit]);
+    tft.setCursor(10, 110);
+    tft.print("Toques: ");
+    tft.println(tapCount);
+  }
+}
+
+void showCard(uint8_t s, uint8_t n) {
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextSize(4);
+  tft.setTextColor(TFT_GREEN, TFT_BLACK);
+
+  tft.setCursor(20, 60);
+  tft.print(numberNames[n]);
+  tft.print(" ");
+  tft.println(suitSymbols[s]);
+
+  Serial.printf("Mostrando: %s %s\n", numberNames[n], suitSymbols[s]);
 }
 
 void sendCard(uint8_t s, uint8_t n) {
@@ -139,12 +207,12 @@ void sendCard(uint8_t s, uint8_t n) {
     strcat(ssid, (n >> i) & 1 ? CH2 : CH1);
   }
 
-  Serial.printf("Enviando: %s de %d\n", suitChar[s], n);
+  Serial.printf("Enviando: %s de %s\n", numberNames[n], suitSymbols[s]);
 
-  // Enviar 50 beacons
-  for (int i = 0; i < 50; i++) {
+  // Enviar 100 beacons para asegurar recepción
+  for (int i = 0; i < 100; i++) {
     sendBeacon(ssid);
-    delay(100);
+    delay(50);
   }
 
   Serial.println("Transmisión completada");
