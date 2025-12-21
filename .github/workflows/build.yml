@@ -1,4 +1,4 @@
-name: Build All
+name: Build ESP32 Firmware
 
 on:
   push:
@@ -8,16 +8,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Android APK build deshabilitado (no se usa)
-  # ESP32 firmware usa ESP-IDF, no Arduino CLI
-  # La compilación debe hacerse localmente con ESP-IDF
-
-  placeholder:
-    name: Workflow Placeholder
+  build-esp32-idf:
+    name: Build ESP32-S3 Firmware (ESP-IDF)
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Info
-      run: |
-        echo "Este repositorio usa ESP-IDF para el firmware ESP32"
-        echo "Compilar localmente con: idf.py build"
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+
+    - name: ESP-IDF Build
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        esp_idf_version: v5.1.2
+        target: esp32s3
+        path: 'esp32/reloj_toques_espidf'
+
+    - name: Upload firmware binaries
+      uses: actions/upload-artifact@v4
+      with:
+        name: esp32s3-firmware
+        path: |
+          esp32/reloj_toques_espidf/build/*.bin
+          esp32/reloj_toques_espidf/build/*.elf
+          esp32/reloj_toques_espidf/build/bootloader/bootloader.bin
+          esp32/reloj_toques_espidf/build/partition_table/partition-table.bin
