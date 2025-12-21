@@ -55,7 +55,7 @@ jobs:
 
     - name: Compile ESP32 firmware
       run: |
-        arduino-cli compile --fqbn esp32:esp32:esp32s3 esp32/reloj_toques.ino --output-dir build/esp32
+        arduino-cli compile --fqbn esp32:esp32:esp32s3 esp32/reloj_toques --output-dir build/esp32
 
     - name: Upload ESP32 firmware
       uses: actions/upload-artifact@v4

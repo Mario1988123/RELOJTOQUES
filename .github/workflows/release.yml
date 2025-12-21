@@ -42,7 +42,7 @@ jobs:
 
     - name: Compile ESP32 firmware
       run: |
-        arduino-cli compile --fqbn esp32:esp32:esp32s3 esp32/reloj_toques.ino --output-dir build/esp32
+        arduino-cli compile --fqbn esp32:esp32:esp32s3 esp32/reloj_toques --output-dir build/esp32
 
     # Rename artifacts with version
     - name: Rename artifacts
