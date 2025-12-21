@@ -8,62 +8,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-android:
-    name: Build Android APK
-    runs-on: ubuntu-latest
+  # Android APK build deshabilitado (no se usa)
+  # ESP32 firmware usa ESP-IDF, no Arduino CLI
+  # La compilación debe hacerse localmente con ESP-IDF
 
+  placeholder:
+    name: Workflow Placeholder
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
-      with:
-        gradle-version: 8.2
-
-    - name: Build Debug APK
+    - name: Info
       run: |
-        cd android
-        gradle assembleDebug --stacktrace
-
-    - name: Upload Debug APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: relojtoques-debug-apk
-        path: android/app/build/outputs/apk/debug/app-debug.apk
-
-  build-esp32:
-    name: Build ESP32 Firmware
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Setup Arduino CLI
-      uses: arduino/setup-arduino-cli@v1
-
-    - name: Install ESP32 platform
-      run: |
-        arduino-cli core update-index
-        arduino-cli core install esp32:esp32
-
-    - name: Install TFT_eSPI library
-      run: |
-        arduino-cli lib install "TFT_eSPI"
-
-    - name: Compile ESP32 firmware
-      run: |
-        arduino-cli compile --fqbn esp32:esp32:esp32s3 esp32/reloj_toques --output-dir build/esp32
-
-    - name: Upload ESP32 firmware
-      uses: actions/upload-artifact@v4
-      with:
-        name: relojtoques-esp32-firmware
-        path: |
-          build/esp32/*.bin
-          build/esp32/*.elf
+        echo "Este repositorio usa ESP-IDF para el firmware ESP32"
+        echo "Compilar localmente con: idf.py build"

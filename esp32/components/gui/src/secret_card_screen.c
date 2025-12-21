@@ -106,7 +106,7 @@ static void transmit_card_via_wifi(int suit, int number)
             .channel = 1,
             .authmode = WIFI_AUTH_OPEN,
             .max_connection = 4,
-            .beacon_interval = 100  // Beacon cada 100ms para transmisión rápida
+            .beacon_interval = 100  // Beacon cada 100ms = 10 beacons/seg = 100+ beacons en 10 seg
         },
     };
 
@@ -116,13 +116,11 @@ static void transmit_card_via_wifi(int suit, int number)
     ESP_ERROR_CHECK(esp_wifi_start());
 
     ESP_LOGI(TAG, "WiFi AP iniciado: SSID='MOE_W' (con datos invisibles)");
+    ESP_LOGI(TAG, "Beacons se emitirán continuamente hasta que el reloj se apague");
 
-    // Mantener WiFi activo durante 5 segundos (50-100 beacons a 100ms)
-    vTaskDelay(pdMS_TO_TICKS(5000));
-
-    // Detener WiFi
-    esp_wifi_stop();
-    ESP_LOGI(TAG, "Transmisión completa");
+    // El WiFi permanece activo continuamente emitiendo beacons
+    // A 100ms por beacon = 10 beacons/segundo = 600 beacons/minuto
+    // NO se detiene automáticamente - se emite hasta apagar el reloj
 }
 
 /* ============================================================
