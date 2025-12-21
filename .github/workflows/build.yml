@@ -1,12 +1,15 @@
-name: Build APK
+name: Build All
 
 on:
   push:
+    branches: [ main, 'claude/**' ]
+  pull_request:
     branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  build:
+  build-android:
+    name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
@@ -18,14 +21,46 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Build APK
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x android/gradlew
+
+    - name: Build Debug APK
       run: |
         cd android
-        chmod +x gradlew
-        ./gradlew assembleDebug
+        ./gradlew assembleDebug --stacktrace
 
-    - name: Upload APK
+    - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
+        name: relojtoques-debug-apk
         path: android/app/build/outputs/apk/debug/app-debug.apk
+
+  build-esp32:
+    name: Build ESP32 Firmware
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Arduino CLI
+      uses: arduino/setup-arduino-cli@v1
+
+    - name: Install ESP32 platform
+      run: |
+        arduino-cli core update-index
+        arduino-cli core install esp32:esp32
+
+    - name: Compile ESP32 firmware
+      run: |
+        arduino-cli compile --fqbn esp32:esp32:esp32s3 esp32/reloj_toques.ino --output-dir build/esp32
+
+    - name: Upload ESP32 firmware
+      uses: actions/upload-artifact@v4
+      with:
+        name: relojtoques-esp32-firmware
+        path: |
+          build/esp32/*.bin
+          build/esp32/*.elf
