@@ -12,7 +12,7 @@
 #include "settings_screen.h"
 #include "notifications.h"
 #include "draw_screen.h"
-#include "magic_trick_screen.h"  // 🎯 Truco de magia
+#include "secret_card_screen.h"  // 🎯 Pantalla secreta
 #include "lvgl.h"
 
 static const char *TAG = "WATCHFACE";
@@ -198,11 +198,11 @@ static void screen_events(lv_event_t *e)
         }
     }
     else if (code == LV_EVENT_LONG_PRESSED) {
-        // Toque largo (2 segundos): abrir truco de magia
-        ESP_LOGW(TAG, "LONG PRESS -> abrir magic trick");
-        lv_obj_t *magic = magic_trick_screen_get();
-        if (magic) {
-            load_screen(watchface_screen, magic, LV_SCR_LOAD_ANIM_FADE_IN);
+        // Toque largo (2 segundos): abrir pantalla secreta
+        ESP_LOGW(TAG, "LONG PRESS -> abrir pantalla secreta");
+        lv_obj_t *secret = secret_card_screen_get();
+        if (secret) {
+            load_screen(watchface_screen, secret, LV_SCR_LOAD_ANIM_FADE_IN);
         }
     }
 }

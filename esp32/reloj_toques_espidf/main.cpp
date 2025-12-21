@@ -47,12 +47,11 @@ static void nvs_init_safe(void)
 }
 
 /* --------------------------------------------------------
-   POWER INIT – BLE only + sin WiFi + sin BT clásico
+   POWER INIT – BLE only + sin BT clásico
    -------------------------------------------------------- */
 static void power_init(void) {
-    // WiFi completamente apagado
-    esp_wifi_stop();
-    esp_wifi_deinit();
+    // No apagamos WiFi completamente porque lo usaremos para los beacons
+    // WiFi se inicializará bajo demanda en secret_card_screen
 
     // Liberar memoria del Bluetooth clásico
     esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
