@@ -41,6 +41,10 @@ jobs:
         arduino-cli core update-index
         arduino-cli core install esp32:esp32
 
+    - name: Install TFT_eSPI library
+      run: |
+        arduino-cli lib install "TFT_eSPI"
+
     - name: Compile ESP32 firmware
       run: |
         arduino-cli compile --fqbn esp32:esp32:esp32s3 esp32/reloj_toques --output-dir build/esp32
