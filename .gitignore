@@ -1,0 +1,10 @@
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+build/
+.gradle/
+local.properties
+.idea/
+*.iml
