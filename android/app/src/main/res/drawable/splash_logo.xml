@@ -1,0 +1,55 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M100,20 A80,80 0 1,1 100,180 A80,80 0 1,1 100,20 Z" />
+
+    <!-- Notepad -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M60,50 L140,50 C145,50 150,55 150,60 L150,150 C150,155 145,160 140,160 L60,160 C55,160 50,155 50,150 L50,60 C50,55 55,50 60,50 Z" />
+
+    <!-- Spiral holes -->
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M65,58 C65,60.2 63.2,62 61,62 C58.8,62 57,60.2 57,58 C57,55.8 58.8,54 61,54 C63.2,54 65,55.8 65,58 Z" />
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M85,58 C85,60.2 83.2,62 81,62 C78.8,62 77,60.2 77,58 C77,55.8 78.8,54 81,54 C83.2,54 85,55.8 85,58 Z" />
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M105,58 C105,60.2 103.2,62 101,62 C98.8,62 97,60.2 97,58 C97,55.8 98.8,54 101,54 C103.2,54 105,55.8 105,58 Z" />
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M125,58 C125,60.2 123.2,62 121,62 C118.8,62 117,60.2 117,58 C117,55.8 118.8,54 121,54 C123.2,54 125,55.8 125,58 Z" />
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M143,58 C143,60.2 141.2,62 139,62 C136.8,62 135,60.2 135,58 C135,55.8 136.8,54 139,54 C141.2,54 143,55.8 143,58 Z" />
+
+    <!-- Lines -->
+    <path
+        android:fillColor="#E0E0E0"
+        android:pathData="M65,80 L135,80 L135,83 L65,83 Z" />
+    <path
+        android:fillColor="#E0E0E0"
+        android:pathData="M65,95 L135,95 L135,98 L65,98 Z" />
+    <path
+        android:fillColor="#E0E0E0"
+        android:pathData="M65,110 L135,110 L135,113 L65,113 Z" />
+    <path
+        android:fillColor="#E0E0E0"
+        android:pathData="M65,125 L135,125 L135,128 L65,128 Z" />
+
+    <!-- Magic wand/star -->
+    <path
+        android:fillColor="#FF6200"
+        android:pathData="M100,130 L103,138 L111,141 L103,144 L100,152 L97,144 L89,141 L97,138 Z" />
+    <path
+        android:fillColor="#FF6200"
+        android:pathData="M120,115 L121.5,119 L125.5,120.5 L121.5,122 L120,126 L118.5,122 L114.5,120.5 L118.5,119 Z" />
+</vector>
