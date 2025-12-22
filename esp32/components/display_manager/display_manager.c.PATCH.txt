@@ -1,0 +1,39 @@
+// Patched display_manager.c for Arduino S3Watch
+// This version only adds the missing includes and forward declarations
+// so that esp_err_t and the bsp_display_* / bsp_power_* helpers are known.
+
+#include "esp_err.h"
+#include "bsp_power.h"
+#include "bsp/display.h"
+#include "display_manager.h"
+
+// Forward declarations for BSP display helpers that are provided by the
+// Waveshare BSP component but are not declared in the public headers
+// we are using here.
+esp_err_t bsp_display_sleep(void);
+esp_err_t bsp_display_wake(void);
+esp_err_t bsp_display_clear_black(void);
+
+// ---------------------------------------------------------------------
+// NOTE: The rest of the file should be your original implementation.
+// ---------------------------------------------------------------------
+
+// To keep your local changes, **do not** overwrite the whole file with
+// this placeholder.  Instead, open your original
+//   components/display_manager/display_manager.c
+// and, at the very top of the file:
+//
+//   1. Add:
+//        #include "esp_err.h"
+//        #include "bsp_power.h"
+//
+//   2. Make sure "bsp/display.h" is included (either directly or via one
+//      of your own headers).
+//
+//   3. Add these three prototypes near the includes:
+//        esp_err_t bsp_display_sleep(void);
+//        esp_err_t bsp_display_wake(void);
+//        esp_err_t bsp_display_clear_black(void);
+//
+// Then re‑build the project.
+// This file is included here only as documentation in the ZIP.

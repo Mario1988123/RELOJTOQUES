@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Reloj Toques</string>
+    <string name="app_name">Notas</string>
+    <string name="notes">Notas</string>
+    <string name="tasks">Tareas</string>
+    <string name="new_note">Nueva nota</string>
+    <string name="title_hint">Título</string>
+    <string name="content_hint">Empieza a escribir</string>
+    <string name="search_notes">Buscar notas</string>
+    <string name="delete">Eliminar</string>
+    <string name="share">Compartir</string>
+    <string name="created_by">Creado por EliteMagic</string>
+    <string name="magic_command">Comando mágico</string>
+    <string name="listening">Escuchando…</string>
+    <string name="tap_to_activate">Toca para activar el micrófono</string>
+    <string name="permission_required">Se necesita permiso de micrófono</string>
+    <string name="grant_permission">Conceder permiso</string>
+    <string name="draw_card">Dibujar carta</string>
+    <string name="voice_magic">🎤 Magia de voz</string>
 </resources>

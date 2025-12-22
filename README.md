@@ -1,63 +1,62 @@
-# 🃏 Reloj Toques
+# RELOJTOQUES 🎩✨
 
-Sistema para transmitir cartas de poker mediante toques en un reloj ESP32-S3. Las cartas se envían por WiFi usando beacons y se visualizan en una app Android.
+**Sistema completo de magia con reloj inteligente ESP32-S3 y app Android**
 
-## 🎯 Cómo Funciona
+## 📋 Descripción
 
-1. **Dar toques en el reloj** para seleccionar palo (1-4 toques)
-2. **Esperar 2-3 segundos**
-3. **Dar toques** para número (1-13 toques)
-4. La carta se transmite automáticamente por WiFi beacon
-5. La app Android la detecta y muestra
+RELOJTOQUES es un sistema de magia profesional que combina:
 
-## 🃏 Codificación de Cartas
+- **Reloj inteligente ESP32-S3**: Permite seleccionar una carta de forma invisible mediante toques
+- **App Android**: Recibe la carta mediante beacons WiFi y la muestra discretamente  
+- **Transmisión invisible**: Utiliza caracteres Unicode invisibles en el SSID WiFi
 
-### Palos (1-4 toques)
-- 1 toque = ♥ Corazones
-- 2 toques = ♠ Picas
-- 3 toques = ♣ Tréboles
-- 4 toques = ♦ Diamantes
+## 🎯 Funcionamiento
 
-### Números (1-13 toques)
-- 1 = As
-- 2-10 = 2-10
-- 11 = J (Jota)
-- 12 = Q (Reina)
-- 13 = K (Rey)
+### En el Reloj (ESP32-S3)
 
-## 📁 Estructura
+1. **Pantalla principal**: Muestra la hora normalmente
+2. **Activar modo secreto**: Mantener pulsada la pantalla 2 segundos
+3. **Pantalla secreta**: Aparece pantalla negra con título "Notificación"
+4. **Seleccionar palo**: Toca 1-4 veces (♥ ♠ ♣ ♦)
+5. **Espera 2 segundos** sin tocar para confirmar
+6. **Seleccionar número**: Toca 1-13 veces (A, 2-10, J, Q, K)
+7. **Espera 2 segundos** para confirmar y transmitir
+8. **Transmisión continua**: Emite beacons WiFi "MOE_W" hasta apagar
 
+### En la App Android
+
+1. Abrir app RELOJTOQUES
+2. Crear/abrir una nota
+3. Presionar botón de escaneo WiFi
+4. La app detecta automáticamente el beacon "MOE_W"
+5. Muestra la carta decodificada
+6. Insertar carta en la nota
+
+## 🔧 Compilación Firmware ESP32
+
+```bash
+# Requiere ESP-IDF v5.3+
+cd esp32/
+idf.py build
+idf.py -p /dev/ttyUSB0 flash monitor
 ```
-RELOJTOQUES/
-├── esp32/              # Firmware Arduino para ESP32-S3
-├── android/            # App Android (Kotlin)
-└── .github/workflows/  # CI/CD para compilar APK
+
+## 📱 Compilar App Android
+
+```bash
+cd android/
+./gradlew assembleDebug
+# APK en: app/build/outputs/apk/debug/
 ```
 
-## 🚀 Instalación Rápida
+## ✨ Características Clave
 
-### ESP32
-1. Abrir `esp32/reloj_toques.ino` en Arduino IDE
-2. Seleccionar board ESP32S3
-3. Upload
+- Selección invisible de carta mediante toques
+- Transmisión WiFi con caracteres invisibles (U+200B, U+200C, U+200D, U+200E)
+- Interfaz LVGL en reloj
+- App con Jetpack Compose
+- Decodificación automática en tiempo real
 
-### Android
-El APK se compila automáticamente en GitHub Actions.
-Descárgalo de: https://github.com/Mario1988123/RELOJTOQUES/actions
+---
 
-## 📱 Uso
-
-1. Instalar APK en Android
-2. Abrir app y dar permisos
-3. Presionar "Iniciar Escaneo"
-4. En ESP32: dar toques para enviar carta
-5. Ver carta en app
-
-## 🛠️ Hardware
-
-- ESP32-S3
-- Acelerómetro QMI8658 (I2C: SDA=GPIO18, SCL=GPIO8)
-
-## 📄 Licencia
-
-Código abierto - Uso educativo
+**¡Que disfrutes la magia!** ✨

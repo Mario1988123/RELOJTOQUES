@@ -8,27 +8,81 @@ on:
         required: true
 
 jobs:
-  release:
+  build-and-release:
+    name: Build and Release
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
 
+    # Build Android APK
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Build APK
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: 8.2
+
+    - name: Build Release APK
       run: |
         cd android
-        chmod +x gradlew
-        ./gradlew assembleDebug
+        gradle assembleRelease --stacktrace
 
+    # Build ESP32 Firmware
+    - name: Setup Arduino CLI
+      uses: arduino/setup-arduino-cli@v1
+
+    - name: Install ESP32 platform
+      run: |
+        arduino-cli core update-index
+        arduino-cli core install esp32:esp32
+
+    - name: Install TFT_eSPI library
+      run: |
+        arduino-cli lib install "TFT_eSPI"
+
+    - name: Compile ESP32 firmware
+      run: |
+        arduino-cli compile --fqbn esp32:esp32:esp32s3 esp32/reloj_toques --output-dir build/esp32
+
+    # Rename artifacts with version
+    - name: Rename artifacts
+      run: |
+        mkdir -p release
+        cp android/app/build/outputs/apk/release/app-release-unsigned.apk release/RelojToques-${{ github.event.inputs.version }}.apk || cp android/app/build/outputs/apk/debug/app-debug.apk release/RelojToques-${{ github.event.inputs.version }}.apk
+        cp build/esp32/reloj_toques.ino.bin release/RelojToques-ESP32-${{ github.event.inputs.version }}.bin
+
+    # Create Release
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ github.event.inputs.version }}
-        name: Release ${{ github.event.inputs.version }}
-        files: android/app/build/outputs/apk/debug/app-debug.apk
+        name: Reloj Toques ${{ github.event.inputs.version }}
+        body: |
+          ## 🃏 Reloj Toques ${{ github.event.inputs.version }}
+
+          ### 📦 Descargas
+
+          - **Android APK**: Instala en tu móvil Android
+          - **ESP32 Firmware (.bin)**: Flash en tu reloj ESP32-S3
+
+          ### 📝 Instalación
+
+          **Android:**
+          1. Descarga el APK
+          2. Habilita "Instalar apps de fuentes desconocidas"
+          3. Instala el APK
+
+          **ESP32:**
+          1. Descarga el .bin
+          2. Usa esptool o Arduino IDE para flashear
+          ```bash
+          esptool.py --chip esp32s3 write_flash 0x0 RelojToques-ESP32-${{ github.event.inputs.version }}.bin
+          ```
+        files: |
+          release/RelojToques-${{ github.event.inputs.version }}.apk
+          release/RelojToques-ESP32-${{ github.event.inputs.version }}.bin

@@ -1,0 +1,37 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:translateX="21.6"
+        android:translateY="21.6">
+
+        <!-- Main notepad shape - simple and clean like Google Keep -->
+        <path
+            android:fillColor="#FFB300"
+            android:pathData="M35,20 L73,20 C75.2,20 77,21.8 77,24 L77,88 C77,90.2 75.2,92 73,92 L35,92 C32.8,92 31,90.2 31,88 L31,24 C31,21.8 32.8,20 35,20 Z" />
+
+        <!-- Horizontal lines on the notepad -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.3"
+            android:pathData="M37,35 L71,35 L71,36 L37,36 Z
+                           M37,42 L71,42 L71,43 L37,43 Z
+                           M37,49 L71,49 L71,50 L37,50 Z
+                           M37,56 L71,56 L71,57 L37,57 Z
+                           M37,63 L71,63 L71,64 L37,64 Z
+                           M37,70 L71,70 L71,71 L37,71 Z
+                           M37,77 L71,77 L71,78 L37,78 Z" />
+
+        <!-- Microphone icon (small, subtle) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M57,72 C59,72 60.5,70.5 60.5,68.5 L60.5,62 C60.5,60 59,58.5 57,58.5 C55,58.5 53.5,60 53.5,62 L53.5,68.5 C53.5,70.5 55,72 57,72 Z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M62,66 L62,68.5 C62,71.5 59.5,74 56.5,74 C53.5,74 51,71.5 51,68.5 L51,66 L50,66 L50,68.5 C50,72.3 53,75.5 56.5,76 L56.5,78 L54,78 L54,79 L59,79 L59,78 L56.5,78 L56.5,76 C60,75.5 63,72.3 63,68.5 L63,66 L62,66 Z" />
+    </group>
+</vector>

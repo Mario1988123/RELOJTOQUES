@@ -1,0 +1,7 @@
+## IDF Component Manager Manifest File
+dependencies:
+  waveshare/qmi8658: 
+    version: "*"
+  lvgl/lvgl:
+    version: "9.3.0"
+    public: true
