@@ -68,17 +68,20 @@ extern "C" void app_main(void) {
     // 2) Config de energía
     power_init();
 
-    // 3) Event loop
+    // 3) Inicializar netif para WiFi
+    ESP_ERROR_CHECK(esp_netif_init());
+
+    // 4) Event loop
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
-    // 4) Activar pantalla pronto
+    // 5) Activar pantalla pronto
     display_manager_pm_early_init();
 
-    // 5) Iniciar pantalla / BSP
+    // 6) Iniciar pantalla / BSP
     bsp_display_start();
     bsp_extra_init();
 
-    // 6) Cargar ajustes del usuario
+    // 7) Cargar ajustes del usuario
     settings_init();
 
     /* --------------------------------------------------------

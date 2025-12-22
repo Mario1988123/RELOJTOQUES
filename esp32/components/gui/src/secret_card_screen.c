@@ -82,10 +82,8 @@ static void transmit_card_via_wifi(int suit, int number)
     ESP_LOGI(TAG, "Transmitiendo carta: Palo=%d, Número=%d", suit, number);
 
     // Inicializar WiFi si no está inicializado
+    // NOTA: esp_netif_init() y esp_event_loop_create_default() ya se llaman en main.cpp
     if (!s_wifi_initialized) {
-        esp_netif_init();
-        ESP_ERROR_CHECK(esp_event_loop_create_default());
-
         wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
         ESP_ERROR_CHECK(esp_wifi_init(&cfg));
         ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
