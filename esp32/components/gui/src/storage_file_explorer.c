@@ -35,6 +35,9 @@ static void screen_events(lv_event_t* e)
 //#if LV_HAS_FILE_EXPLORER
 //#include "lv_file_explorer.h"
 #include "lvgl_spiffs_fs.h"
+
+/*
+// File explorer widget not available - using fallback
 static void create_explorer_1(lv_obj_t* parent)
 {
     //lvgl_spiffs_fs_register();
@@ -43,15 +46,10 @@ static void create_explorer_1(lv_obj_t* parent)
 
     lv_file_explorer_open_dir(fe, "S:/");
 
-    // Set root path; this depends on LVGL FS configuration (e.g., 'S:/' for SPIFFS)
-    // Try common defaults; fall back to POSIX path if driver supports it
-/*#if defined(LV_FS_STDIO_PATH)
-    lv_file_explorer_set_path(fe, LV_FS_STDIO_PATH);
-#else
-    lv_file_explorer_set_path(fe, "S:/"); // SPIFFS mapped via custom FS driver
-#endif*/
     lv_file_explorer_set_sort(fe, LV_EXPLORER_SORT_KIND); // folders first
 }
+*/
+
 /*#else*/
 // Fallback: simple list of files from /spiffs using POSIX APIs
 static void create_explorer_2(lv_obj_t* parent)
